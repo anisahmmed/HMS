@@ -14,8 +14,8 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 flex">
+    <body class="font-sans antialiased bg-gradient-to-br from-slate-50 to-blue-50">
+        <div class="min-h-screen flex">
             <!-- Sidebar will be included here -->
             @yield('sidebar')
 
