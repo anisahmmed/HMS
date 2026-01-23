@@ -16,12 +16,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(RoleSeeder::class);
+        $this->call(DoctorSeeder::class);
+        $this->call(PatientSeeder::class);
 
         // User::factory(10)->create();
 
+        // Create admin user
+        $adminRole = \App\Models\Role::where('name', 'Administrators')->first();
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'role_id' => $adminRole->id,
+        ])->roles()->attach($adminRole->id);
     }
 }

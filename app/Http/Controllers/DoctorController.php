@@ -13,9 +13,25 @@ class DoctorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $doctors = Doctor::with('user')->get();
+        $query = Doctor::with('user');
+
+        // Search by name
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->whereHas('user', function ($q) use ($search) {
+                $q->where('name', 'LIKE', '%' . $search . '%');
+            });
+        }
+
+        // Filter by specialization
+        if ($request->has('specialization') && !empty($request->specialization)) {
+            $query->where('specialization', $request->specialization);
+        }
+
+        $doctors = $query->get();
+
         return view('doctors.index', compact('doctors'));
     }
 

@@ -2,68 +2,68 @@
 
 @section('sidebar')
 <!-- Sidebar -->
-<div class="w-64 bg-gradient-to-b from-indigo-600 via-purple-600 to-pink-600 text-white min-h-screen shadow-xl">
-    <div class="p-6">
-        <h2 class="text-2xl font-bold mb-6">Hospital HMS</h2>
+<div class="bg-gradient-to-b from-indigo-600 via-purple-600 to-pink-600 text-white min-h-screen shadow-xl">
+    <div :class="sidebarOpen ? 'p-6' : 'p-2'">
+        <h2 :class="sidebarOpen ? 'text-2xl' : 'text-sm'" class="font-bold mb-6">Hospital HMS</h2>
         <nav>
             <ul class="space-y-2">
                 <li>
-                    <a href="{{ route('dashboard') }}" class="flex items-center p-3 rounded {{ request()->routeIs('dashboard') ? 'bg-white bg-opacity-30' : '' }}">
-                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('dashboard') }}" class="flex items-center p-3 rounded group transition-colors duration-300 {{ request()->routeIs('dashboard') ? 'bg-white bg-opacity-30' : '' }}">
+                        <svg class="w-7 h-7 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
                         </svg>
-                        Dashboard
+                        <span :class="sidebarOpen ? '' : 'absolute left-full ml-2 bg-black text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'" class="ml-3">Dashboard</span>
                     </a>
                 </li>
                 @if(auth()->user()->role && auth()->user()->role->name == 'Administrators')
                 <li>
-                    <a href="{{ route('doctors.index') }}" class="flex items-center p-3 rounded">
-                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('doctors.index') }}" class="flex items-center p-3 rounded group transition-colors duration-300">
+                        <svg class="w-7 h-7 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
-                        Doctors
+                        <span :class="sidebarOpen ? '' : 'absolute left-full ml-2 bg-black text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'" class="ml-3">Doctors</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('staff.index') }}" class="flex items-center p-3 rounded">
-                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('staff.index') }}" class="flex items-center p-3 rounded group transition-colors duration-300">
+                        <svg class="w-7 h-7 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                         </svg>
-                        Staff
+                        <span :class="sidebarOpen ? '' : 'absolute left-full ml-2 bg-black text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'" class="ml-3">Staff</span>
                     </a>
                 </li>
                 @endif
                 <li>
-                    <a href="{{ route('appointments.index') }}" class="flex items-center p-3 rounded">
-                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('appointments.index') }}" class="flex items-center p-3 rounded group transition-colors duration-300">
+                        <svg class="w-7 h-7 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4v10a2 2 0 002 2h4a2 2 0 002-2V11M9 11h6"></path>
                         </svg>
-                        Appointments
+                        <span :class="sidebarOpen ? '' : 'absolute left-full ml-2 bg-black text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'" class="ml-3">Appointments</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('queues.index') }}" class="flex items-center p-3 rounded">
-                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('queues.index') }}" class="flex items-center p-3 rounded group transition-colors duration-300">
+                        <svg class="w-7 h-7 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
                         </svg>
-                        Queue
+                        <span :class="sidebarOpen ? '' : 'absolute left-full ml-2 bg-black text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'" class="ml-3">Queue</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('opd.index') }}" class="flex items-center p-3 rounded">
-                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('opd.index') }}" class="flex items-center p-3 rounded group transition-colors duration-300">
+                        <svg class="w-7 h-7 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
-                        OPD
+                        <span :class="sidebarOpen ? '' : 'absolute left-full ml-2 bg-black text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'" class="ml-3">OPD</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('profile.edit') }}" class="flex items-center p-3 rounded">
-                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('profile.edit') }}" class="flex items-center p-3 rounded group transition-colors duration-300">
+                        <svg class="w-7 h-7 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
-                        Profile
+                        <span :class="sidebarOpen ? '' : 'absolute left-full ml-2 bg-black text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'" class="ml-3">Profile</span>
                     </a>
                 </li>
             </ul>
@@ -81,8 +81,15 @@
             <!-- Welcome Message -->
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg mb-6">
                 <div class="p-6 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white">
-                    <h3 class="text-2xl font-bold mb-2">Welcome back, {{ auth()->user()->name }}!</h3>
-                    <p class="text-blue-100">You are logged in as {{ auth()->user()->role ? auth()->user()->role->name : 'No Role' }}. Here's your overview.</p>
+                    <div class="flex items-center">
+                        <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2">Welcome back, {{ auth()->user()->name }}!</h3>
+                            <p class="text-blue-100">You are logged in as {{ auth()->user()->role ? auth()->user()->role->name : 'No Role' }}. Here's your overview.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -158,7 +165,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             <a href="{{ route('doctors.create') }}" class="flex items-center p-4 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg hover:from-blue-100 hover:to-purple-100 ">
                                 <div class="p-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                     </svg>
                                 </div>
@@ -169,7 +176,7 @@
                             </a>
                             <a href="{{ route('staff.create') }}" class="flex items-center p-4 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg hover:from-purple-100 hover:to-pink-100 ">
                                 <div class="p-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                     </svg>
                                 </div>
@@ -178,9 +185,20 @@
                                     <p class="text-sm text-gray-600">Register new staff member</p>
                                 </div>
                             </a>
+                            <a href="{{ route('appointments.create') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200 rounded-lg hover:from-indigo-100 hover:to-blue-100 ">
+                                <div class="p-2 bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-full mr-3">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4v10a2 2 0 002 2h4a2 2 0 002-2V11M9 11h6"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Schedule Appointment</p>
+                                    <p class="text-sm text-gray-600">Book a new appointment</p>
+                                </div>
+                            </a>
                             <a href="{{ route('opd.create') }}" class="flex items-center p-4 bg-gradient-to-r from-pink-50 to-red-50 border border-pink-200 rounded-lg hover:from-pink-100 hover:to-red-100 ">
                                 <div class="p-2 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-full mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
                                 </div>
@@ -201,18 +219,18 @@
                             <div class="space-y-2">
                                 <a href="{{ route('doctors.index') }}" class="block p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded hover:from-blue-100 hover:to-purple-100 ">
                                     <div class="flex items-center">
-                                        <svg class="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-7 h-7 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                         </svg>
-                                        Manage Doctors
+                                        Manage <span :class="sidebarOpen ? '' : 'absolute left-full ml-2 bg-black text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'" class="ml-3">Doctors</span>
                                     </div>
                                 </a>
                                 <a href="{{ route('staff.index') }}" class="block p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded hover:from-purple-100 hover:to-pink-100 ">
                                     <div class="flex items-center">
-                                        <svg class="w-5 h-5 text-purple-700 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-7 h-7 text-purple-700 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                                         </svg>
-                                        Manage Staff
+                                        Manage <span :class="sidebarOpen ? '' : 'absolute left-full ml-2 bg-black text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'" class="ml-3">Staff</span>
                                     </div>
                                 </a>
                             </div>
@@ -224,26 +242,26 @@
                             <div class="space-y-2">
                                 <a href="{{ route('appointments.index') }}" class="block p-3 bg-gradient-to-r from-pink-50 to-red-50 rounded hover:from-pink-100 hover:to-red-100 ">
                                     <div class="flex items-center">
-                                        <svg class="w-5 h-5 text-pink-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-7 h-7 text-pink-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4v10a2 2 0 002 2h4a2 2 0 002-2V11M9 11h6"></path>
                                         </svg>
-                                        Appointments
+                                        <span :class="sidebarOpen ? '' : 'absolute left-full ml-2 bg-black text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'" class="ml-3">Appointments</span>
                                     </div>
                                 </a>
                                 <a href="{{ route('queues.index') }}" class="block p-3 bg-gradient-to-r from-red-50 to-orange-50 rounded hover:from-red-100 hover:to-orange-100 ">
                                     <div class="flex items-center">
-                                        <svg class="w-5 h-5 text-red-700 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-7 h-7 text-red-700 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
                                         </svg>
-                                        Queue Management
+                                        Queue <span :class="sidebarOpen ? '' : 'absolute left-full ml-2 bg-black text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'" class="ml-3">Management</span>
                                     </div>
                                 </a>
                                 <a href="{{ route('opd.index') }}" class="block p-3 bg-gradient-to-r from-orange-50 to-yellow-50 rounded hover:from-orange-100 hover:to-yellow-100 ">
                                     <div class="flex items-center">
-                                        <svg class="w-5 h-5 text-orange-800 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-7 h-7 text-orange-800 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                         </svg>
-                                        OPD Visits
+                                        OPD <span :class="sidebarOpen ? '' : 'absolute left-full ml-2 bg-black text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'" class="ml-3">Visits</span>
                                     </div>
                                 </a>
                             </div>
@@ -305,7 +323,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             <a href="{{ route('appointments.index') }}" class="flex items-center p-4 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg hover:from-blue-100 hover:to-purple-100 ">
                                 <div class="p-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4v10a2 2 0 002 2h4a2 2 0 002-2V11M9 11h6"></path>
                                     </svg>
                                 </div>
@@ -316,7 +334,7 @@
                             </a>
                             <a href="{{ route('queues.index') }}" class="flex items-center p-4 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg hover:from-purple-100 hover:to-pink-100 ">
                                 <div class="p-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
                                     </svg>
                                 </div>
@@ -327,7 +345,7 @@
                             </a>
                             <a href="{{ route('opd.index') }}" class="flex items-center p-4 bg-gradient-to-r from-pink-50 to-red-50 border border-pink-200 rounded-lg hover:from-pink-100 hover:to-red-100 ">
                                 <div class="p-2 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-full mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
                                 </div>
@@ -392,20 +410,31 @@
                     <div class="p-6">
                         <h3 class="text-lg font-semibold mb-4 text-gray-900">Front Desk Panel</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <a href="{{ route('appointments.create') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200 rounded-lg hover:from-indigo-100 hover:to-blue-100 ">
+                                <div class="p-2 bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-full mr-3">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Schedule Appointment</p>
+                                    <p class="text-sm text-gray-600">Book a new appointment</p>
+                                </div>
+                            </a>
                             <a href="{{ route('appointments.index') }}" class="flex items-center p-4 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg hover:from-blue-100 hover:to-purple-100 ">
                                 <div class="p-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4v10a2 2 0 002 2h4a2 2 0 002-2V11M9 11h6"></path>
                                     </svg>
                                 </div>
                                 <div>
                                     <p class="font-medium text-gray-900">Manage Appointments</p>
-                                    <p class="text-sm text-gray-600">Schedule and manage appointments</p>
+                                    <p class="text-sm text-gray-600">View and manage appointments</p>
                                 </div>
                             </a>
                             <a href="{{ route('queues.index') }}" class="flex items-center p-4 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg hover:from-purple-100 hover:to-pink-100 ">
                                 <div class="p-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
                                     </svg>
                                 </div>
@@ -416,7 +445,7 @@
                             </a>
                             <a href="{{ route('opd.index') }}" class="flex items-center p-4 bg-gradient-to-r from-pink-50 to-red-50 border border-pink-200 rounded-lg hover:from-pink-100 hover:to-red-100 ">
                                 <div class="p-2 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-full mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
                                 </div>
@@ -427,7 +456,7 @@
                             </a>
                             <a href="{{ route('opd.create') }}" class="flex items-center p-4 bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-lg hover:from-red-100 hover:to-orange-100 ">
                                 <div class="p-2 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-full mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                     </svg>
                                 </div>

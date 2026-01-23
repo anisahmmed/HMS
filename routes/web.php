@@ -28,6 +28,9 @@ Route::middleware(['auth', 'role:Administrators'])->group(function () {
 
     // Staff management
     Route::resource('staff', \App\Http\Controllers\StaffController::class);
+
+    // Patient management
+    Route::resource('patients', \App\Http\Controllers\PatientController::class);
 });
 
 Route::middleware(['auth', 'role:Doctors'])->group(function () {

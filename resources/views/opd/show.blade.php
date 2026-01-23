@@ -59,7 +59,7 @@
 
                     <div class="mt-6">
                         <a href="{{ route('opd.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                            Back to OPD List
+                            Back to OPD <span :class="sidebarOpen ? 'inline' : 'hidden group-hover:inline'" class=ml-3>List</span>
                         </a>
                     </div>
                 </div>
