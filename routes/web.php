@@ -68,6 +68,9 @@ Route::middleware(['auth', 'role:Front Desk/Billing Staff,Pharmacists/Lab Techs'
     // Appointment management for front desk
     Route::resource('appointments', \App\Http\Controllers\AppointmentController::class);
 
+    // Appointment PDF export
+    Route::get('/appointments/export-doctor/{doctorId}', [\App\Http\Controllers\AppointmentController::class, 'exportDoctorAppointments'])->name('appointments.export-doctor');
+
     // Queue management for front desk
     Route::resource('queues', \App\Http\Controllers\QueueController::class);
     Route::post('/queues/call-next', [\App\Http\Controllers\QueueController::class, 'callNext'])->name('queues.call-next');

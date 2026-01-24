@@ -7,6 +7,7 @@ use App\Models\Patient;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class AppointmentController extends Controller
 {
@@ -115,6 +116,24 @@ class AppointmentController extends Controller
         }
 
         return redirect()->route('appointments.index')->with('success', 'Appointment updated successfully.');
+    }
+
+    /**
+     * Export appointments for a specific doctor as PDF.
+     */
+    public function exportDoctorAppointments($doctorId)
+    {
+        $doctor = Doctor::with('user')->findOrFail($doctorId);
+        $appointments = Appointment::where('doctor_id', $doctorId)
+            ->with('patient.user')
+            ->orderBy('serial_number')
+            ->get();
+
+        $pdf = PDF::loadView('appointments.doctor-pdf', compact('doctor', 'appointments'));
+
+        $filename = 'doctor_' . $doctor->user->name . '_appointments_' . now()->format('Y-m-d') . '.pdf';
+
+        return $pdf->download($filename);
     }
 
     /**

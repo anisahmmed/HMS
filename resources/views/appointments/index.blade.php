@@ -24,14 +24,12 @@
                     </h1>
                     <p class="mt-2 text-gray-600">View and manage all appointment schedules</p>
                 </div>
-                @if(Auth::user()->hasRole('Front Desk/Billing Staff') || Auth::user()->hasRole('Administrators'))
-                    <a href="{{ route('appointments.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
-                        Schedule New Appointment
-                    </a>
-                @endif
+                <a href="{{ route('appointments.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Schedule New Appointment
+                </a>
             </div>
         </div>
 
@@ -102,6 +100,44 @@
             </div>
         </div>
 
+        <!-- Doctor Export Section -->
+        {{-- @if(auth()->user()->hasRole('Administrators') || auth()->user()->hasRole('Front Desk/Billing Staff') || auth()->user()->hasRole('Pharmacists/Lab Techs')) --}}
+        <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden mb-8">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-green-50 to-emerald-50">
+                <h3 class="text-lg font-medium text-gray-900 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Export Doctor Appointments
+                </h3>
+            </div>
+            <div class="p-6">
+                {{-- Debug: User role: @php echo auth()->user()->roles->pluck('name')->join(', ') . ' | Doctors count: ' . \App\Models\Doctor::count(); @endphp --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @php
+                        $doctors = \App\Models\Doctor::with('user')->get();
+                    @endphp
+                    @foreach($doctors as $doctor)
+                    <div class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-900">{{ $doctor->user->name }}</p>
+                            <p class="text-sm text-gray-600">{{ $doctor->specialization }}</p>
+                            <p class="text-xs text-gray-500">{{ \App\Models\Appointment::where('doctor_id', $doctor->id)->count() }} appointments</p>
+                        </div>
+                        <a href="{{ route('appointments.export-doctor', $doctor->id) }}"
+                           class="inline-flex items-center px-3 py-2 bg-green-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Export PDF
+                        </a>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        {{-- @endif --}}
+
         <!-- Appointments Table -->
         <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
@@ -117,6 +153,14 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                    </svg>
+                                    Serial #
+                                </div>
+                            </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 <div class="flex items-center">
                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -163,6 +207,11 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse($appointments as $appointment)
                         <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
+                                    {{ $appointment->serial_number }}
+                                </span>
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-10 w-10">
@@ -212,7 +261,7 @@
                                         </svg>
                                         View
                                     </a>
-                                    @if(Auth::user()->hasRole('Front Desk/Billing Staff') || Auth::user()->hasRole('Administrators'))
+                                    @if(Auth::user()->hasRole('Front Desk/Billing Staff') || Auth::user()->hasRole('Administrators') || Auth::user()->hasRole('Doctors'))
                                         <a href="{{ route('appointments.edit', $appointment) }}" class="text-green-600 hover:text-green-900 inline-flex items-center">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
