@@ -14,7 +14,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased bg-gradient-to-br from-slate-50 to-blue-50">
+    <body class="font-sans antialiased bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 min-h-screen">
         <div class="min-h-screen" x-data="{ sidebarOpen: true }">
             <!-- Fixed Top Navigation -->
             <div class="fixed top-0 left-0 right-0 z-40">
@@ -22,8 +22,8 @@
             </div>
 
             <!-- Fixed Sidebar -->
-            <div :class="sidebarOpen ? 'w-64' : 'w-16'" class="fixed left-0 top-16 bottom-0 transition-all duration-300 z-30">
-                <div class="bg-gradient-to-b from-indigo-600 via-purple-600 to-pink-600 text-white h-full shadow-xl overflow-y-auto">
+            <div :class="sidebarOpen ? 'w-64' : 'w-16'" class="fixed left-0 top-16 bottom-0 transition-all duration-500 ease-in-out z-30">
+                <div class="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 text-white h-full shadow-2xl overflow-y-auto backdrop-blur-sm border-r border-white/10">
                     <div :class="sidebarOpen ? 'p-6' : 'p-2'">
                         <h2 :class="sidebarOpen ? 'text-2xl' : 'text-sm'" class="font-bold mb-6">Hospital HMS</h2>
                         <nav>
@@ -111,11 +111,11 @@
             </div>
 
             <!-- Main Content -->
-            <div :class="sidebarOpen ? 'ml-64' : 'ml-16'" class="transition-all duration-300 pt-16 min-h-screen">
+            <div :class="sidebarOpen ? 'ml-64' : 'ml-16'" class="transition-all duration-500 ease-in-out pt-16 min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
                 <!-- Page Heading -->
                 @hasSection('header')
-                    <header class="bg-white shadow">
-                        <div class="py-6 px-4 sm:px-6 lg:px-8">
+                    <header class="bg-white/80 backdrop-blur-lg shadow-xl border-b border-white/20">
+                        <div class="py-8 px-4 sm:px-6 lg:px-8">
                             @yield('header')
                         </div>
                     </header>

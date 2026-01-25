@@ -52,7 +52,7 @@ class AppointmentController extends Controller
         $request->validate([
             'patient_id' => 'required|exists:patients,id',
             'doctor_id' => 'required|exists:doctors,id',
-            'date' => 'required|date|after:today',
+            'date' => 'required|date|after_or_equal:today',
             'time' => 'required|date_format:H:i',
             'notes' => 'nullable|string',
         ]);
@@ -65,9 +65,6 @@ class AppointmentController extends Controller
             'status' => 'scheduled',
             'notes' => $request->notes,
         ]);
-
-        // Placeholder for SMS notification
-        // SendSMS::send($appointment->patient->user->phone, 'Your appointment is scheduled for ' . $appointment->date . ' at ' . $appointment->time);
 
         return redirect()->route('appointments.index')->with('success', 'Appointment scheduled successfully.');
     }
@@ -121,17 +118,27 @@ class AppointmentController extends Controller
     /**
      * Export appointments for a specific doctor as PDF.
      */
-    public function exportDoctorAppointments($doctorId)
+    public function exportDoctorAppointments(Request $request, $doctorId)
     {
         $doctor = Doctor::with('user')->findOrFail($doctorId);
-        $appointments = Appointment::where('doctor_id', $doctorId)
+
+        $query = Appointment::where('doctor_id', $doctorId)
             ->with('patient.user')
-            ->orderBy('serial_number')
-            ->get();
+            ->orderBy('serial_number');
 
-        $pdf = PDF::loadView('appointments.doctor-pdf', compact('doctor', 'appointments'));
+        // Filter by date if provided
+        if ($request->has('date') && !empty($request->date)) {
+            $query->where('date', $request->date);
+        }
 
-        $filename = 'doctor_' . $doctor->user->name . '_appointments_' . now()->format('Y-m-d') . '.pdf';
+        $appointments = $query->get();
+
+        $filterDate = $request->date ? \Carbon\Carbon::parse($request->date)->format('M j, Y') : null;
+
+        $pdf = PDF::loadView('appointments.doctor-pdf', compact('doctor', 'appointments', 'filterDate'));
+
+        $dateSuffix = $filterDate ? '_' . \Carbon\Carbon::parse($request->date)->format('Y-m-d') : '';
+        $filename = 'doctor_' . $doctor->user->name . '_appointments' . $dateSuffix . '_' . now()->format('Y-m-d') . '.pdf';
 
         return $pdf->download($filename);
     }

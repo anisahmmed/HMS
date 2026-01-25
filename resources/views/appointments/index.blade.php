@@ -113,26 +113,103 @@
             </div>
             <div class="p-6">
                 {{-- Debug: User role: @php echo auth()->user()->roles->pluck('name')->join(', ') . ' | Doctors count: ' . \App\Models\Doctor::count(); @endphp --}}
+
+                <!-- Filter Controls -->
+                <form method="GET" action="{{ route('appointments.index') }}" class="mb-6 bg-gray-50 p-4 rounded-lg border">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="doctor_filter" class="block text-sm font-medium text-gray-700 mb-2">
+                                Filter by Doctor
+                            </label>
+                            <select name="doctor_filter" id="doctor_filter"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                                <option value="">All Doctors</option>
+                                @php
+                                    $allDoctors = \App\Models\Doctor::with('user')->get();
+                                @endphp
+                                @foreach($allDoctors as $doc)
+                                <option value="{{ $doc->id }}" {{ request('doctor_filter') == $doc->id ? 'selected' : '' }}>
+                                    {{ $doc->user->name }} - {{ $doc->specialization }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="date_filter" class="block text-sm font-medium text-gray-700 mb-2">
+                                Filter by Appointment Date
+                            </label>
+                            <input type="date" name="date_filter" id="date_filter" value="{{ request('date_filter') }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                        </div>
+
+                        <div class="flex items-end space-x-2">
+                            <button type="submit"
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
+                                <svg class="w-5 h-5 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                Apply Filters
+                            </button>
+                            <a href="{{ route('appointments.index') }}"
+                               class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200">
+                                Clear
+                            </a>
+                        </div>
+                    </div>
+                </form>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     @php
-                        $doctors = \App\Models\Doctor::with('user')->get();
+                        $query = \App\Models\Doctor::with('user');
+
+                        // Filter by selected doctor
+                        if (request('doctor_filter')) {
+                            $query->where('id', request('doctor_filter'));
+                        }
+
+                        $doctors = $query->get();
                     @endphp
-                    @foreach($doctors as $doctor)
+                    @forelse($doctors as $doctor)
                     <div class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
                         <div>
                             <p class="font-medium text-gray-900">{{ $doctor->user->name }}</p>
                             <p class="text-sm text-gray-600">{{ $doctor->specialization }}</p>
-                            <p class="text-xs text-gray-500">{{ \App\Models\Appointment::where('doctor_id', $doctor->id)->count() }} appointments</p>
+                            @php
+                                $appointmentQuery = \App\Models\Appointment::where('doctor_id', $doctor->id);
+                                if (request('date_filter')) {
+                                    $appointmentQuery->where('date', request('date_filter'));
+                                }
+                                $appointmentCount = $appointmentQuery->count();
+                            @endphp
+                            <p class="text-xs text-gray-500">{{ $appointmentCount }} appointments{{ request('date_filter') ? ' on ' . \Carbon\Carbon::parse(request('date_filter'))->format('M j, Y') : '' }}</p>
                         </div>
-                        <a href="{{ route('appointments.export-doctor', $doctor->id) }}"
+                        @if($appointmentCount > 0)
+                        <a href="{{ route('appointments.export-doctor', ['doctorId' => $doctor->id, 'date' => request('date_filter')]) }}"
                            class="inline-flex items-center px-3 py-2 bg-green-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
                             Export PDF
                         </a>
+                        @else
+                        <span class="inline-flex items-center px-3 py-2 bg-gray-400 border border-transparent rounded-md text-sm font-medium text-white cursor-not-allowed">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            No Appointments
+                        </span>
+                        @endif
                     </div>
-                    @endforeach
+                    @empty
+                    <div class="col-span-full text-center py-8">
+                        <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-.98-5.5-2.5m-.5-4a7.963 7.963 0 015-2.5c2.34 0 4.29.98 5.5 2.5m.5 4a7.963 7.963 0 01-5 2.5z"></path>
+                        </svg>
+                        <p class="text-gray-500 text-lg">No doctors found matching the selected filters.</p>
+                        <a href="{{ route('appointments.index') }}" class="text-blue-600 hover:text-blue-800 mt-2 inline-block">Clear filters</a>
+                    </div>
+                    @endforelse
                 </div>
             </div>
         </div>

@@ -113,6 +113,9 @@
     <div class="header">
         <div class="hospital-name">Hospital Management System</div>
         <div class="report-title">Doctor Appointments Report</div>
+        @if(isset($filterDate))
+        <div>Filtered by Date: {{ $filterDate }}</div>
+        @endif
         <div>Generated on: {{ now()->format('F j, Y \a\t g:i A') }}</div>
     </div>
 

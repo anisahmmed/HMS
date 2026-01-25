@@ -48,6 +48,30 @@
             <form action="{{ route('appointments.store') }}" method="POST" class="p-8">
                 @csrf
 
+                <!-- Patient Selection Type -->
+                <div class="mb-8">
+                    <h3 class="text-md font-medium text-gray-900 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        Patient Selection
+                    </h3>
+                    <div class="mb-4">
+                        <div class="flex items-center space-x-6">
+                            <label class="flex items-center">
+                                <input type="radio" name="patient_type" value="existing" {{ old('patient_type', 'existing') == 'existing' ? 'checked' : '' }}
+                                       class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300" required>
+                                <span class="ml-2 text-sm font-medium text-gray-700">Select Existing Patient</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="patient_type" value="new" {{ old('patient_type') == 'new' ? 'checked' : '' }}
+                                       class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300" required>
+                                <span class="ml-2 text-sm font-medium text-gray-700">Create New Patient</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Patient and Doctor Selection -->
                 <div class="mb-8">
                     <h3 class="text-md font-medium text-gray-900 mb-4 flex items-center">
@@ -57,6 +81,7 @@
                         Patient & Doctor
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Patient Selection (Simplified for debugging) -->
                         <div>
                             <label for="patient_id" class="block text-sm font-medium text-gray-700 mb-2">
                                 Patient <span class="text-red-500">*</span>
@@ -72,7 +97,7 @@
                                     <option value="">Select a patient...</option>
                                     @foreach($patients as $patient)
                                         <option value="{{ $patient->id }}" {{ old('patient_id') == $patient->id ? 'selected' : '' }}>
-                                            {{ $patient->user->name }} ({{ $patient->user->email }})
+                                            {{ $patient->user->name }} ({{ $patient->user->email ?? $patient->user->phone }})
                                         </option>
                                     @endforeach
                                 </select>
@@ -80,6 +105,7 @@
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
+                            <p class="text-xs text-gray-500 mt-1">For new patients, first create them in the Patients section</p>
                         </div>
 
                         <div>
@@ -194,4 +220,34 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const patientTypeRadios = document.querySelectorAll('input[name="patient_type"]');
+    const existingPatientSection = document.getElementById('existing-patient-section');
+    const newPatientSection = document.getElementById('new-patient-section');
+    const patientIdSelect = document.getElementById('patient_id');
+
+    function togglePatientFields() {
+        const selectedType = document.querySelector('input[name="patient_type"]:checked').value;
+
+        if (selectedType === 'existing') {
+            existingPatientSection.classList.remove('hidden');
+            newPatientSection.classList.add('hidden');
+            patientIdSelect.required = true;
+        } else {
+            existingPatientSection.classList.add('hidden');
+            newPatientSection.classList.remove('hidden');
+            patientIdSelect.required = false;
+        }
+    }
+
+    patientTypeRadios.forEach(radio => {
+        radio.addEventListener('change', togglePatientFields);
+    });
+
+    // Initialize on page load
+    togglePatientFields();
+});
+</script>
 @endsection
